@@ -1,0 +1,105 @@
+:root {
+	--btn-size: 3.5em;
+	--preset-size: 2em;
+	--gap-size: 0.5em;
+	--text-size: 18px;
+	--bg-color: #999;
+	--label-size: 0.2em;
+	--preset-color: #0d6efd;
+}
+
+body {
+	overflow-y: hidden;
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#toolbar,
+#presets {
+	gap: 0.5em;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.top-row,
+.bottom-row {
+	display: flex;
+	gap: var(--gap-size);
+	margin-bottom: var(--gap-size);
+	justify-content: center;
+	user-select: none;
+}
+
+#presets {
+	width: 13em;
+}
+
+.preset-btn {
+	transition: all 250ms;
+	border-radius: 100%;
+	cursor: pointer;
+	user-select: none;
+	border: solid 1px var(--preset-color);
+	color: var(--preset-color);
+	width: var(--preset-size);
+	height: var(--preset-size);
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.preset-btn:hover {
+	color: #fff;
+	background-color: var(--preset-color);
+}
+
+.music-btn {
+	transition: all 250ms;
+	flex: none;
+	border: solid 2px var(--bg-color);
+	border-radius: 100%;
+	width: var(--btn-size);
+	height: var(--btn-size);
+	text-align: center;
+	font-size: var(--text-size);
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	gap: 0.25em;
+	position: relative;
+}
+
+.music-btn__note-number,
+.music-btn__note-label {
+	margin-top: 0.6em;
+}
+
+.music-btn__note-number {
+	opacity: 60%;
+}
+
+.music-btn__note-label {
+	font-weight: 600;
+	font-size: 1.5em;
+}
+
+.music-btn__note-sublabel {
+	position: absolute;
+	top: 0.75em;
+	line-height: var(--label-size);
+	white-space: nowrap;
+	height: var(--label-size);
+	width: var(--label-size);
+	color: #fff;
+	left: 0.75em;
+}
+
+.music-btn.hover {
+	background-color: var(--bg-color);
+	color: #fff;
+}
