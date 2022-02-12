@@ -1,6 +1,6 @@
 :root {
 	--btn-size: 3.5em;
-	--preset-size: 2em;
+	--preset-size: 3em;
 	--gap-size: 0.5em;
 	--text-size: 18px;
 	--bg-color: #999;
@@ -36,7 +36,14 @@ body {
 }
 
 #presets {
-	width: 13em;
+	width: calc(var(--preset-size) * 6);
+	align-items: center;
+}
+
+.work-area {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .preset-btn {
@@ -49,7 +56,9 @@ body {
 	width: var(--preset-size);
 	height: var(--preset-size);
 	text-align: center;
-	font-size: 1.2em;
+	vertical-align: middle;
+	line-height: var(--preset-size);
+	font-size: var(--text-size);
 }
 
 .preset-btn:hover {
@@ -102,4 +111,44 @@ body {
 .music-btn.hover {
 	background-color: var(--bg-color);
 	color: #fff;
+}
+
+@media only screen and (max-device-width: 812px) {
+	:root {
+		--text-size: 1.8em;
+		touch-action: manipulation;
+	}
+
+	.work-area {
+		flex-direction: row;
+		gap: 1em;
+	}
+
+	.work-area .btn {
+		font-size: var(--text-size);
+	}
+
+	#toolbar {
+		flex-direction: column;
+	}
+
+	#presets {
+		column-count: 2;
+		/* Chromium Bug, cannot calculate width automatically */
+		/* https://bugs.chromium.org/p/chromium/issues/detail?id=507397 */
+		width: calc(var(--preset-size) * 4 + var(--gap-size));
+		height: calc(var(--preset-size) * 8);
+		flex-direction: column;
+		flex-wrap: wrap-reverse;
+		gap: var(--gap-size);
+	}
+
+	#keyboard {
+		display: flex;
+	}
+
+	.top-row,
+	.bottom-row {
+		flex-direction: column-reverse;
+	}
 }
