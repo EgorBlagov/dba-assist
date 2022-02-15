@@ -10,6 +10,8 @@ import {
 
 const buttons_by_pos = {};
 const buttons_by_note = {};
+const preset_type_by_key = {};
+const preset_el_by_type = {};
 
 const RADIO_NAME = "chord-type";
 const CHORD_INFOS = {
@@ -51,34 +53,42 @@ const PRESET_INFOS = {
 	Dm: {
 		label: "Dm",
 		notes: build_min("D"),
+		key: "KeyQ",
 	},
 	Am: {
 		label: "Am",
 		notes: build_min("A"),
+		key: "KeyW",
 	},
 	E7: {
 		label: "E7",
 		notes: build_maj_7("E"),
+		key: "KeyE",
 	},
 	B7: {
 		label: "B7",
 		notes: build_maj_7("B"),
+		key: "KeyR",
 	},
 	F: {
 		label: "F",
 		notes: build_maj("F"),
+		key: "KeyA",
 	},
 	C: {
 		label: "C",
 		notes: build_maj("C"),
+		key: "KeyS",
 	},
 	G: {
 		label: "G",
 		notes: build_maj("G"),
+		key: "KeyD",
 	},
 	D7: {
 		label: "D7",
 		notes: build_maj_7("D"),
+		key: "KeyF",
 	},
 };
 
@@ -277,28 +287,85 @@ function add_notes() {
 function build_presets() {
 	const root = document.getElementById("presets");
 	for (const key in PRESET_INFOS) {
-		build_preset(root, key, PRESET_INFOS[key].label);
+		build_preset(root, key, PRESET_INFOS[key].label, PRESET_INFOS[key].key);
 	}
 }
 
-function build_preset(parent, type, label) {
+function format_key(key) {
+	const match = key.match(/Key([A-Z])/);
+	let key_name = key;
+	if (match) {
+		key_name = match[1];
+	}
+
+	return `<${key_name}>`;
+}
+
+function build_preset(parent, type, caption, key) {
 	const preset = document.createElement("div");
 	preset.className = "preset-btn";
-	preset.innerText = label;
 	preset.onmouseenter = hover_preset(type, true);
 	preset.onmouseleave = hover_preset(type, false);
 
+	const wrapper = document.createElement("div");
+	wrapper.className = "preset-btn__wrapper";
+
+	const label = document.createElement("div");
+	label.innerText = caption;
+	label.classList.add("preset-btn__label");
+
+	const sublabel = document.createElement("div");
+	sublabel.innerText = format_key(key);
+	sublabel.classList.add("preset-btn__sublabel");
+
+	wrapper.appendChild(label);
+	wrapper.appendChild(sublabel);
+	preset.appendChild(wrapper);
 	parent.appendChild(preset);
+
+	preset_type_by_key[key] = type;
+	preset_el_by_type[type] = preset;
+}
+
+function activate_preset(type) {
+	highlight_notes([]);
+	for (const el of Object.values(preset_el_by_type)) {
+		el.classList.remove("hover");
+	}
+
+	if (preset_el_by_type.hasOwnProperty(type)) {
+		preset_el_by_type[type].classList.add("hover");
+		highlight_notes(PRESET_INFOS[type].notes);
+	}
 }
 
 function hover_preset(type, inside) {
+	if (inside) {
+		return function () {
+			activate_preset(type);
+		};
+	}
+
 	return function () {
-		if (!inside) {
-			highlight_notes([]);
-		} else {
-			highlight_notes(PRESET_INFOS[type].notes);
-		}
+		activate_preset(null);
 	};
+}
+
+function add_keyboard_handlers() {
+	document.addEventListener("keypress", (event) => {
+		const key_code = event.code;
+		if (preset_type_by_key.hasOwnProperty(key_code)) {
+			if (
+				preset_el_by_type[
+					preset_type_by_key[key_code]
+				].classList.contains("hover")
+			) {
+				activate_preset(null);
+			} else {
+				activate_preset(preset_type_by_key[key_code]);
+			}
+		}
+	});
 }
 
 export function main() {
@@ -307,4 +374,5 @@ export function main() {
 	build_presets();
 	add_notes();
 	update_alert("Hover any button!");
+	add_keyboard_handlers();
 }

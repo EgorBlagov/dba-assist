@@ -1,6 +1,6 @@
 :root {
 	--btn-size: 3.5em;
-	--preset-size: 3em;
+	--preset-size: 4.5em;
 	--gap-size: 0.5em;
 	--text-size: 18px;
 	--bg-color: #999;
@@ -36,7 +36,7 @@ body {
 }
 
 #presets {
-	width: calc(var(--preset-size) * 6);
+	width: calc(var(--preset-size) * 4);
 	align-items: center;
 }
 
@@ -44,26 +44,6 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-}
-
-.preset-btn {
-	transition: all 250ms;
-	border-radius: 100%;
-	cursor: pointer;
-	user-select: none;
-	border: solid 1px var(--preset-color);
-	color: var(--preset-color);
-	width: var(--preset-size);
-	height: var(--preset-size);
-	text-align: center;
-	vertical-align: middle;
-	line-height: var(--preset-size);
-	font-size: var(--text-size);
-}
-
-.preset-btn:hover {
-	color: #fff;
-	background-color: var(--preset-color);
 }
 
 .music-btn {
@@ -113,9 +93,39 @@ body {
 	color: #fff;
 }
 
+.preset-btn {
+	transition: all 250ms;
+	border-radius: 100%;
+	cursor: pointer;
+	user-select: none;
+	padding: 0.5em;
+	border: solid 1px var(--preset-color);
+	padding-top: 0.5em;
+	color: var(--preset-color);
+	width: var(--preset-size);
+	height: var(--preset-size);
+	text-align: center;
+	vertical-align: middle;
+	font-size: 0.75em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.preset-btn.hover {
+	color: #fff;
+	background-color: var(--preset-color);
+}
+
+.preset-btn__label {
+	font-weight: 600;
+	font-size: 1.5em;
+}
+
 @media only screen and (max-device-width: 812px) {
 	:root {
 		--text-size: 1.8em;
+		--preset-size: 5em;
 		touch-action: manipulation;
 	}
 
@@ -136,11 +146,15 @@ body {
 		column-count: 2;
 		/* Chromium Bug, cannot calculate width automatically */
 		/* https://bugs.chromium.org/p/chromium/issues/detail?id=507397 */
-		width: calc(var(--preset-size) * 4 + var(--gap-size));
-		height: calc(var(--preset-size) * 8);
+		width: calc(var(--preset-size) * 2);
+		height: calc(var(--preset-size) * 4);
 		flex-direction: column;
 		flex-wrap: wrap-reverse;
 		gap: var(--gap-size);
+	}
+
+	.preset-btn__sublabel {
+		display: none;
 	}
 
 	#keyboard {
